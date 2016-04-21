@@ -1,0 +1,6 @@
+name: AntiCheatPE
+main: AntiCheatPE\Main
+version: 1.0.0
+api: [2.0.0]
+author: luca28pet
+description: Anti cheat
