@@ -40,7 +40,7 @@ class EventListener implements Listener{
 
             if(
                 Main::isAirUnder($p) and
-                $this->antiCheat->isElevating[$p->getId()] > 1.3
+                $this->antiCheat->isElevating[$p->getId()] > 1.5
             ){
                 $p->sendMessage(TextFormat::RED."Hax <3");
             }
