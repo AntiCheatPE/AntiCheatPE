@@ -69,5 +69,9 @@ class EventListener implements Listener{
             $this->antiCheat->getServer()->getIPBans()->addBan($p->getAddress());
         }
     }
+        $distance = $event->getFrom()->distanceSquared($event->getTo());
+        if($distance > pow(2, 1)){
+            $event->getPlayer()->kick(TextFormat::RED . "Antispeed");
+            }
 
 }
