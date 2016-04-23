@@ -19,7 +19,9 @@ class EventListener implements Listener{
 
         if($p->isCreative() or $p->isSpectator() or $p->getAllowFlight() or $p->hasEffect(8)) return;
 
-        if(!Main::isAirUnder($p) and isset($this->antiCheat->isElevating[$p->getId()])) unset($this->antiCheat->isElevating[$p->getId()]);
+        if(!Main::isAirUnder($p) and isset($this->antiCheat->isElevating[$p->getId()])){
+            unset($this->antiCheat->isElevating[$p->getId()]);
+        }
 
         $fromY = $event->getFrom()->y;
         $toY = $event->getTo()->y;
@@ -43,7 +45,7 @@ class EventListener implements Listener{
                 Main::isAirUnder($p) and
                 $this->antiCheat->isElevating[$p->getId()] > 1.5
             ){
-                $this->antiCheat->players[$name] ++;
+                $this->antiCheat->players[$name]++;
             }else{
                 $this->antiCheat->players[$name] = 0;
             }
@@ -53,7 +55,7 @@ class EventListener implements Listener{
             round($fromY, 5) === round($toY, 5) and
             Main::isAirUnder($p)
         ){
-            $this->antiCheat->players[$name] ++;
+            $this->antiCheat->players[$name]++;
         }else{
             $this->antiCheat->players[$name] = 0;
         }
@@ -62,16 +64,20 @@ class EventListener implements Listener{
             unset($this->antiCheat->players[$name]);
             $this->antiCheat->kicks[$name] ++;
             $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were kicked for using mods/hacks. Please disable them to play on this server!", false);
+            return;
         }
 
         if($this->antiCheat->kicks[$name] === 3){
             unset($this->antiCheat->kicks[$name]);
             $this->antiCheat->getServer()->getIPBans()->addBan($p->getAddress());
+            $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks. Please disable them to play on this server!", false);
+            return;
+        }
+
+        if(Main::XZDistanceSquared($event->getFrom(), $event->getTo()) > 2){
+            $event->getPlayer()->kick(TextFormat::RED . "Antispeed");
         }
     }
-        $distance = $event->getFrom()->distanceSquared($event->getTo());
-        if($distance > pow(2, 1)){
-            $event->getPlayer()->kick(TextFormat::RED . "Antispeed");
-            }
+
 
 }

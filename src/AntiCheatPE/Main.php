@@ -3,6 +3,7 @@
 namespace AntiCheatPE;
 
 use pocketmine\level\Position;
+use pocketmine\math\Vector3;
 use pocketmine\plugin\PluginBase;
 
 class Main extends PluginBase{
@@ -41,6 +42,10 @@ class Main extends PluginBase{
         $under[] = $pos->level->getBlockIdAt($last[0], $y, $last[1]);
 
         return !array_filter($under);
+    }
+    
+    public static function XZDistanceSquared(Vector3 $v1, Vector3 $v2){
+        return ($v1->x - $v2->x) ** 2 + ($v1->z - $v2->z) ** 2;
     }
 
 }
