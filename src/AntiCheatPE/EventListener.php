@@ -67,7 +67,7 @@ class EventListener implements Listener{
             return;
         }
 
-        if($this->antiCheat->kicks[$name] === 3){
+        if(isset($this->antiCheat->kicks[$name]) and $this->antiCheat->kicks[$name] === 3){
             unset($this->antiCheat->kicks[$name]);
             $this->antiCheat->getServer()->getIPBans()->addBan($p->getAddress());
             $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks. Please disable them to play on this server!", false);
