@@ -74,7 +74,7 @@ class EventListener implements Listener{
             return;
         }
 
-        if(Main::XZDistanceSquared($event->getFrom(), $event->getTo()) > 2){
+        if(Main::XZDistanceSquared($event->getFrom(), $event->getTo()) > 1){
             $event->getPlayer()->kick(TextFormat::RED . "Antispeed");
         }
     }
