@@ -17,12 +17,13 @@ class EventListener implements Listener{
     public function onMove(PlayerMoveEvent $event){
         $p = $event->getPlayer();
 
-        //if($p->isCreative() or $p->isAdventure()) return;
+        if($p->isCreative() or $p->isSpectator() or $p->getAllowFlight() or $p->hasEffect(8)) return;
 
         if(!Main::isAirUnder($p) and isset($this->antiCheat->isElevating[$p->getId()])) unset($this->antiCheat->isElevating[$p->getId()]);
 
         $fromY = $event->getFrom()->y;
         $toY = $event->getTo()->y;
+        $name = $event->getPlayer()->getName();
 
         if($toY < $fromY and isset($this->antiCheat->isElevating[$p->getId()])){
             $this->antiCheat->isElevating[$p->getId()] -= $fromY - $toY;
@@ -42,7 +43,9 @@ class EventListener implements Listener{
                 Main::isAirUnder($p) and
                 $this->antiCheat->isElevating[$p->getId()] > 1.5
             ){
-                $p->sendMessage(TextFormat::RED."Hax <3");
+                $this->antiCheat->players[$name] ++;
+            }else{
+                $this->antiCheat->players[$name] = 0;
             }
         }
 
@@ -50,7 +53,18 @@ class EventListener implements Listener{
             round($fromY, 5) === round($toY, 5) and
             Main::isAirUnder($p)
         ){
-            $p->sendMessage(TextFormat::RED."Hax <3");
+            $this->antiCheat->players[$name] ++;
+        }else{
+            $this->antiCheat->players[$name] = 0;
+        }
+
+        if($this->antiCheat->players[$name] === 3){
+            $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were kicked for using mods/hacks. Please disable them to play on this server!", false);
+            $this->antiCheat->kicks[$name] ++;
+        }
+
+        if($this->antiCheat->kicks[$name] === 3){
+            $this->antiCheat->getServer()->getIPBans()->addBan($p->getAddress());
         }
     }
 
