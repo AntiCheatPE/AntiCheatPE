@@ -8,6 +8,8 @@ use pocketmine\plugin\PluginBase;
 class Main extends PluginBase{
 
     public $isElevating = [];
+    public $players = [];
+    public $kicks = [];
 
     public function onEnable(){
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
