@@ -2,6 +2,7 @@
 
 namespace AntiCheatPE;
 
+use pocketmine\entity\Effect;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\utils\TextFormat;
@@ -74,12 +75,12 @@ class EventListener implements Listener{
             return;
         }
 
-        if(Main::XZDistanceSquared($event->getFrom(), $event->getTo()) > 1){
-            $this->antiCheat->players[$name]++;
-        }else{
-            $this->antiCheat->players[$name] = 0;
+        if(!$p->hasEffect(Effect::SPEED)){
+            if (Main::XZDistanceSquared($event->getFrom(), $event->getTo()) > 1) {
+                $this->antiCheat->players[$name]++;
+            }else{
+                $this->antiCheat->players[$name] = 0;
+            }
         }
     }
-
-
 }
