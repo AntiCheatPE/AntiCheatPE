@@ -70,12 +70,14 @@ class EventListener implements Listener{
         if(isset($this->antiCheat->kicks[$name]) and $this->antiCheat->kicks[$name] === 3){
             unset($this->antiCheat->kicks[$name]);
             $this->antiCheat->getServer()->getIPBans()->addBan($p->getAddress());
-            $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks. Please disable them to play on this server!", false);
+            $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false);
             return;
         }
 
         if(Main::XZDistanceSquared($event->getFrom(), $event->getTo()) > 1){
-            $event->getPlayer()->kick(TextFormat::RED . "Antispeed");
+            $this->antiCheat->players[$name]++;
+        }else{
+            $this->antiCheat->players[$name] = 0;
         }
     }
 
