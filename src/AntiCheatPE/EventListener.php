@@ -18,7 +18,7 @@ class EventListener implements Listener{
     public function onMove(PlayerMoveEvent $event){
         $p = $event->getPlayer();
 
-        if($p->isCreative() or $p->isSpectator() or $p->getAllowFlight() or $p->hasEffect(8)) return;
+        if($p->isCreative() or $p->isSpectator() or $p->getAllowFlight() or $p->hasEffect(8) or $p->hasPermission("anticheat.admin")) return;
 
         if(!Main::isAirUnder($p) and isset($this->antiCheat->isElevating[$p->getId()])){
             unset($this->antiCheat->isElevating[$p->getId()]);
@@ -75,11 +75,9 @@ class EventListener implements Listener{
             return;
         }
 
-        if(!$p->hasEffect(Effect::SPEED)){
+        if(!$p->hasEffect(Effect::SPEED) or $p->hasPermission("anticheat.admin")){
             if (Main::XZDistanceSquared($event->getFrom(), $event->getTo()) > 1) {
                 $this->antiCheat->players[$name]++;
-            }else{
-                $this->antiCheat->players[$name] = 0;
             }
         }
     }
