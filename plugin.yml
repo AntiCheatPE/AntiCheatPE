@@ -5,3 +5,7 @@ api: [2.0.0]
 author: AntiCheatPETeam
 authors: [luca28pet, Fycarman]
 description: AntiCheat plugin for your PocketMine-MP server!
+permissions:
+ anticheat.admin:
+  description: "Prevent being flagged as hacker"
+  default: op
