@@ -5,15 +5,25 @@ namespace AntiCheatPE;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 use pocketmine\plugin\PluginBase;
+use pocketmine\utils\TextFormat;
 
 class Main extends PluginBase{
 
     public $isElevating = [];
     public $players = [];
     public $kicks = [];
+    public $options;
+    public $speedpoints = [];
 
     public function onEnable(){
+        $this->getLogger()->info(TextFormat::GREEN . "AntiCheatPE successfully enabled!");
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+        $this->saveDefaultConfig();
+        $this->options = $this->getConfig()->getAll();
+        if(!is_int($this->options["tags"]) or !is_int($this->options["kicks"]) or !is_int($this->options["points"])){
+            $this->getLogger()->critical(TextFormat::RED . "Config file error: tags, kicks and points must be numerical! Disabling AntiCheatPE...");
+            $this->getServer()->getPluginManager()->disablePlugin($this);
+        }
     }
 
     public static function isAirUnder(Position $pos) : bool{
