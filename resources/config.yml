@@ -7,7 +7,7 @@ tags: 3
 kicks: 3
 #How many speed points a player must get before an action is executed. Default: 7
 points: 7
-#Action executed after the number of kicks defined. Options: ban, ban-ip, custom. Default: ban-ip
+#Action executed after the number of kicks defined. Options: ban, ban-ip, ban-client, custom. Default: ban-ip
 #You can use {player} for the player's name.
 #If you have Timerban or EssentialsPE,and you want to temp-ban a player,just the action as the following:
 #Action: custom
