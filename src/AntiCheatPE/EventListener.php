@@ -81,10 +81,10 @@ class EventListener implements Listener{
                     $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false);
                     break;
                 case "ban-client":
-                    if(($banclientplugin = $this->getServer()->getPluginManager()->getPlugin("BanClient")) !== null){
-                        $banclientplugin->banClient($e->getPlayer(), TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false, true);
+                    if(($banclientplugin = $this->antiCheat->getServer()->getPluginManager()->getPlugin("BanClient")) !== null){
+                        $banclientplugin->banClient($event->getPlayer(), TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false, true);
                     }else{
-                        $this->getServer()->getLogger()->warning("[AntiCheat] BanClient plugin not found!");
+                        $this->antiCheat->getServer()->getLogger()->warning("[AntiCheat] BanClient plugin not found!");
                     }
                     break;
                 case "custom":
@@ -114,10 +114,10 @@ class EventListener implements Listener{
                     $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false);
                     break;
                 case "ban-client":
-                    if(($banclientplugin = $this->getServer()->getPluginManager()->getPlugin("BanClient")) !== null){
-                        $banclientplugin->banClient($e->getPlayer(), TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false, true);
+                    if(($banclientplugin = $this->antiCheat->getServer()->getPluginManager()->getPlugin("BanClient")) !== null){
+                        $banclientplugin->banClient($event->getPlayer(), TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false, true);
                     }else{
-                        $this->getServer()->getLogger()->warning("[AntiCheat] BanClient plugin not found!");
+                        $this->antiCheat->getServer()->getLogger()->warning("[AntiCheat] BanClient plugin not found!");
                     }
                     break;
                 case "custom":
