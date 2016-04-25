@@ -16,7 +16,6 @@ class Main extends PluginBase{
     public $speedpoints = [];
 
     public function onEnable(){
-        $this->getLogger()->info(TextFormat::GREEN . "AntiCheatPE successfully enabled!");
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
         $this->saveDefaultConfig();
         $this->options = $this->getConfig()->getAll();
@@ -24,6 +23,7 @@ class Main extends PluginBase{
             $this->getLogger()->critical(TextFormat::RED . "Config file error: tags, kicks and points must be numerical! Disabling AntiCheatPE...");
             $this->getServer()->getPluginManager()->disablePlugin($this);
         }
+         $this->getLogger()->info(TextFormat::GREEN . "AntiCheatPE successfully enabled!");
     }
 
     public static function isAirUnder(Position $pos) : bool{
