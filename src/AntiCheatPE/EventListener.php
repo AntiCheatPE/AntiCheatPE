@@ -2,6 +2,7 @@
 
 namespace AntiCheatPE;
 
+use pocketmine\command\ConsoleCommandSender;
 use pocketmine\entity\Effect;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerMoveEvent;
@@ -61,23 +62,54 @@ class EventListener implements Listener{
             $this->antiCheat->players[$name] = 0;
         }
 
-        if(isset($this->antiCheat->players[$name]) and $this->antiCheat->players[$name] === 3){
+        if(isset($this->antiCheat->players[$name]) and $this->antiCheat->players[$name] === $this->antiCheat->options["tags"]){
             unset($this->antiCheat->players[$name]);
             $this->antiCheat->kicks[$name] ++;
             $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were kicked for using mods/hacks. Please disable them to play on this server!", false);
             return;
         }
 
-        if(isset($this->antiCheat->kicks[$name]) and $this->antiCheat->kicks[$name] === 3){
+        if(isset($this->antiCheat->kicks[$name]) and $this->antiCheat->kicks[$name] === $this->antiCheat->options["kicks"]){
             unset($this->antiCheat->kicks[$name]);
-            $this->antiCheat->getServer()->getIPBans()->addBan($p->getAddress());
-            $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false);
+            switch($this->antiCheat->options["Action"]){
+                case "ban-ip":
+                    $this->antiCheat->getServer()->getIPBans()->addBan($event->getPlayer()->getAddress());
+                    $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false);
+                    break;
+                case "ban":
+                    $this->antiCheat->getServer()->getNameBans()->addBan($event->getPlayer()->getName());
+                    $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false);
+                    break;
+                case "custom":
+                    foreach($this->antiCheat->options["Commands"] as $commands){
+                        $this->antiCheat->getServer()->dispatchCommand(new ConsoleCommandSender(), "$commands");
+                    }
+            }
             return;
         }
 
-        if(!$p->hasEffect(Effect::SPEED) or $p->hasPermission("anticheat.admin")){
-            if (Main::XZDistanceSquared($event->getFrom(), $event->getTo()) > 1) {
-                $this->antiCheat->players[$name]++;
+        if(!$p->hasEffect(Effect::SPEED) or !$p->hasPermission("anticheat.admin")){
+            if (Main::XZDistanceSquared($event->getFrom(), $event->getTo()) > 1.4) {
+                $this->antiCheat->speedpoints[$name]++;
+            }elseif(Main::XZDistanceSquared($event->getFrom(), $event->getTo()) > 3){
+                $this->antiCheat->speedpoints[$name] += 2;
+            }
+        }
+
+        if(isset($this->antiCheat->speedpoints) and $this->antiCheat->speedpoints[$name] === $this->antiCheat->options["points"]){
+            switch($this->antiCheat->options["Action"]){
+                case "ban-ip":
+                    $this->antiCheat->getServer()->getIPBans()->addBan($event->getPlayer()->getAddress());
+                    $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false);
+                    break;
+                case "ban":
+                    $this->antiCheat->getServer()->getNameBans()->addBan($event->getPlayer()->getName());
+                    $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false);
+                    break;
+                case "custom":
+                    foreach($this->antiCheat->options["Commands"] as $commands){
+                        $this->antiCheat->getServer()->dispatchCommand(new ConsoleCommandSender(), "$commands");
+                    }
             }
         }
     }
