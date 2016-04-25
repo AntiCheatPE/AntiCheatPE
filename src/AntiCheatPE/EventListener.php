@@ -135,6 +135,7 @@ class EventListener implements Listener{
                         $this->antiCheat->getServer()->dispatchCommand(new ConsoleCommandSender(), str_replace("{player}", $event->getPlayer()->getName(), $commands));
                     }
             }
+            return;
         }
     }
 }
