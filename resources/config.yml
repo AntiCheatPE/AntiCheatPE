@@ -1,11 +1,11 @@
 #AntiCheatPE configuration file
 #Authors: luca28pet, Fycarman
 
-#How many times a player must be tagged as hacker before being kicked. Default: 3
+#For fly: How many times a player must be tagged as hacker before being kicked. Default: 3
 tags: 3
-#How many times a player must be kicked before an action is executed. Default: 3
+#Fly & Speed: How many times a player must be kicked before an action is executed. Default: 3
 kicks: 3
-#How many speed points a player must get before an action is executed. Default: 7
+#For speed: How many speed points a player must get before an action is executed. Default: 7
 points: 7
 #Action executed after the number of kicks defined. Options: ban, ban-ip, ban-client, custom. Default: ban-ip
 #You can use {player} for the player's name.
