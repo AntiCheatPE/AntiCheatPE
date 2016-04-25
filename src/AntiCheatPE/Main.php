@@ -23,7 +23,7 @@ class Main extends PluginBase{
             $this->getLogger()->critical(TextFormat::RED . "Config file error: tags, kicks and points must be numerical! Disabling AntiCheatPE...");
             $this->getServer()->getPluginManager()->disablePlugin($this);
         }
-         $this->getLogger()->info(TextFormat::GREEN . "AntiCheatPE successfully enabled!");
+        $this->getLogger()->info(TextFormat::GREEN . "AntiCheatPE successfully enabled!");
     }
 
     public static function isAirUnder(Position $pos) : bool{
