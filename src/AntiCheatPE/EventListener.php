@@ -65,7 +65,7 @@ class EventListener implements Listener{
         if(isset($this->antiCheat->players[$name]) and $this->antiCheat->players[$name] === $this->antiCheat->options["tags"]){
             unset($this->antiCheat->players[$name]);
             $this->antiCheat->kicks[$name] ++;
-            $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were kicked for using mods/hacks. Please disable them to play on this server!", false);
+            $event->getPlayer()->kick($this->antiCheat->options["kick message"], false);
             return;
         }
 
