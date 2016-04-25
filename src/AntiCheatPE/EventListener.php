@@ -96,7 +96,7 @@ class EventListener implements Listener{
             }
         }
 
-        if(isset($this->antiCheat->speedpoints) and $this->antiCheat->speedpoints[$name] === $this->antiCheat->options["points"]){
+        if(isset($this->antiCheat->speedpoints[$name]) and $this->antiCheat->speedpoints[$name] === $this->antiCheat->options["points"]){
             switch($this->antiCheat->options["Action"]){
                 case "ban-ip":
                     $this->antiCheat->getServer()->getIPBans()->addBan($event->getPlayer()->getAddress());
