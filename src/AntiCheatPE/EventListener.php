@@ -64,7 +64,7 @@ class EventListener implements Listener{
 
         if(isset($this->antiCheat->players[$name]) and $this->antiCheat->players[$name] === $this->antiCheat->options["tags"]){
             unset($this->antiCheat->players[$name]);
-            $this->antiCheat->kicks[$name] ++;
+            $this->antiCheat->kicks[$name]++;
             $event->getPlayer()->kick($this->antiCheat->options["kick message"], false);
             return;
         }
@@ -95,22 +95,23 @@ class EventListener implements Listener{
             return;
         }
 
-        if(!$p->hasEffect(Effect::SPEED) or !$p->hasPermission("anticheat.admin")){
-            if (Main::XZDistanceSquared($event->getFrom(), $event->getTo()) > 1.4) {
-                $this->antiCheat->speedpoints[$name]++;
-            }elseif(Main::XZDistanceSquared($event->getFrom(), $event->getTo()) > 3){
-                $this->antiCheat->speedpoints[$name] += 2;
-            }
+        if($p->hasEffect(Effect::SPEED) or $p->hasPermission("anticheat.admin")) return;
+
+        if(($d = Main::XZDistanceSquared($event->getFrom(), $event->getTo())) > 1.4){
+            $this->antiCheat->speedpoints[$name]++;
+        }elseif($d > 3){
+            $this->antiCheat->speedpoints[$name] += 2;
         }
 
         if(isset($this->antiCheat->speedpoints[$name]) and $this->antiCheat->speedpoints[$name] === $this->antiCheat->options["points"]){
             unset($this->antiCheat->speedpoints[$name]);
-            $this->antiCheat->kicks[$name] ++;
+            $this->antiCheat->kicks[$name]++;
             $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were kicked for using mods/hacks. Please disable them to play on this server!", false);
             return;
         }
 
         if(isset($this->antiCheat->kicks[$name]) and $this->antiCheat->kicks[$name] === $this->antiCheat->options["kicks"]){
+            unset($this->antiCheat->kicks[$name]);
             switch($this->antiCheat->options["Action"]){
                 case "ban-ip":
                     $this->antiCheat->getServer()->getIPBans()->addBan($event->getPlayer()->getAddress());
@@ -129,7 +130,7 @@ class EventListener implements Listener{
                     break;
                 case "custom":
                     foreach($this->antiCheat->options["Commands"] as $commands){
-                        $this->antiCheat->getServer()->dispatchCommand(new ConsoleCommandSender(), str_replace("{player}", $event->getPlayer(), $commands));
+                        $this->antiCheat->getServer()->dispatchCommand(new ConsoleCommandSender(), str_replace("{player}", $event->getPlayer()->getName(), $commands));
                     }
             }
         }
