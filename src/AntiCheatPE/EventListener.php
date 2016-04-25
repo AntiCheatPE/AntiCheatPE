@@ -80,6 +80,13 @@ class EventListener implements Listener{
                     $this->antiCheat->getServer()->getNameBans()->addBan($event->getPlayer()->getName());
                     $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false);
                     break;
+                case "ban-client":
+                    if(($banclientplugin = $this->getServer()->getPluginManager()->getPlugin("BanClient")) !== null){
+                        $banclientplugin->banClient($e->getPlayer(), TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false, true);
+                    }else{
+                        $this->getServer()->getLogger()->warning("[AntiCheat] BanClient plugin not found!");
+                    }
+                    break;
                 case "custom":
                     foreach($this->antiCheat->options["Commands"] as $commands){
                         $this->antiCheat->getServer()->dispatchCommand(new ConsoleCommandSender(), "$commands");
@@ -105,6 +112,13 @@ class EventListener implements Listener{
                 case "ban":
                     $this->antiCheat->getServer()->getNameBans()->addBan($event->getPlayer()->getName());
                     $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false);
+                    break;
+                case "ban-client":
+                    if(($banclientplugin = $this->getServer()->getPluginManager()->getPlugin("BanClient")) !== null){
+                        $banclientplugin->banClient($e->getPlayer(), TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false, true);
+                    }else{
+                        $this->getServer()->getLogger()->warning("[AntiCheat] BanClient plugin not found!");
+                    }
                     break;
                 case "custom":
                     foreach($this->antiCheat->options["Commands"] as $commands){
