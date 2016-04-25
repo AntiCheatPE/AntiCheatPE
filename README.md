@@ -13,3 +13,5 @@ Please report bugs by opening an issue on this project, they will be fixed ASAP.
 - [x] Fly hack detection
 - [x] Jump hack detection
 - [x] Make this plugin fully customizable
+
+This project is officially mantained from [ItalianDevs4PM](https://github.com/ItalianDevs4PM)
