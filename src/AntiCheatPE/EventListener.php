@@ -89,7 +89,7 @@ class EventListener implements Listener{
                     break;
                 case "custom":
                     foreach($this->antiCheat->options["Commands"] as $commands){
-                        $this->antiCheat->getServer()->dispatchCommand(new ConsoleCommandSender(), "$commands");
+                        $this->antiCheat->getServer()->dispatchCommand(new ConsoleCommandSender(), str_replace("{player}", $event->getPlayer()->getName(), $commands));
                     }
             }
             return;
