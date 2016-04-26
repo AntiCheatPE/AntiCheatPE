@@ -95,7 +95,7 @@ class EventListener implements Listener{
             }
         }
 
-        //if($p->hasEffect(Effect::SPEED) or $p->hasPermission("anticheat.admin")) return;
+        if($p->hasEffect(Effect::SPEED) or $p->hasPermission("anticheat.admin")) return;
 
         if(($d = Main::XZDistanceSquared($event->getFrom(), $event->getTo())) > 1.4){
             $this->antiCheat->speedpoints[$name]++;
