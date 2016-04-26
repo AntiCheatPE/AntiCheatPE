@@ -6,7 +6,6 @@ use pocketmine\command\ConsoleCommandSender;
 use pocketmine\entity\Effect;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerMoveEvent;
-use pocketmine\utils\TextFormat;
 
 class EventListener implements Listener{
 
@@ -64,26 +63,65 @@ class EventListener implements Listener{
             }
 
             if(isset($this->antiCheat->players[$name]) and $this->antiCheat->players[$name] === $this->antiCheat->options["tags"]){
-                unset($this->antiCheat->players[$name]);
-                $this->antiCheat->kicks[$name]++;
-                $event->getPlayer()->kick($this->antiCheat->options["kick message"], false);
+                if((isset($this->antiCheat->kicks[$name]) and $this->antiCheat->kicks[$name] < $this->antiCheat->options["kicks"] - 1) or !isset($this->antiCheat->kicks[$name])){
+                    unset($this->antiCheat->players[$name]);
+                    ++$this->antiCheat->kicks[$name];
+                    $event->getPlayer()->kick($this->antiCheat->options["kick message"], false);
+                }else{
+                    unset($this->antiCheat->kicks[$name]);
+                    switch($this->antiCheat->options["Action"]){
+                        case "ban-ip":
+                            $this->antiCheat->getServer()->getIPBans()->addBan($event->getPlayer()->getAddress());
+                            $event->getPlayer()->kick($this->antiCheat->options["ban message"], false);
+                            break;
+                        case "ban":
+                            $this->antiCheat->getServer()->getNameBans()->addBan($event->getPlayer()->getName());
+                            $event->getPlayer()->kick($this->antiCheat->options["ban message"], false);
+                            break;
+                        case "ban-client":
+                            if(($banclientplugin = $this->antiCheat->getServer()->getPluginManager()->getPlugin("BanClient")) !== null){
+                                $banclientplugin->banClient($event->getPlayer(), $this->antiCheat->options["ban message"], false, true);
+                            }else{
+                                $this->antiCheat->getServer()->getLogger()->warning("[AntiCheat] BanClient plugin not found!");
+                            }
+                            break;
+                        case "custom":
+                            foreach($this->antiCheat->options["Commands"] as $commands){
+                                $this->antiCheat->getServer()->dispatchCommand(new ConsoleCommandSender(), str_replace("{player}", $event->getPlayer()->getName(), $commands));
+                            }
+                    }
+                }
                 return;
             }
+        }
 
-            if(isset($this->antiCheat->kicks[$name]) and $this->antiCheat->kicks[$name] === $this->antiCheat->options["kicks"]){
+        //if($p->hasEffect(Effect::SPEED) or $p->hasPermission("anticheat.admin")) return;
+
+        if(($d = Main::XZDistanceSquared($event->getFrom(), $event->getTo())) > 1.4){
+            $this->antiCheat->speedpoints[$name]++;
+        }elseif($d > 3){
+            $this->antiCheat->speedpoints[$name] += 2;
+        }
+
+        if(isset($this->antiCheat->speedpoints[$name]) and $this->antiCheat->speedpoints[$name] === $this->antiCheat->options["points"]){
+            if((isset($this->antiCheat->kicks[$name]) and $this->antiCheat->kicks[$name] < $this->antiCheat->options["kicks"] - 1) or !isset($this->antiCheat->kicks[$name])){
+                unset($this->antiCheat->speedpoints[$name]);
+                $this->antiCheat->kicks[$name]++;
+                $event->getPlayer()->kick($this->antiCheat->options["kick message"], false);
+            }else{
                 unset($this->antiCheat->kicks[$name]);
                 switch($this->antiCheat->options["Action"]){
                     case "ban-ip":
                         $this->antiCheat->getServer()->getIPBans()->addBan($event->getPlayer()->getAddress());
-                        $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false);
+                        $event->getPlayer()->kick($this->antiCheat->options["ban message"], false);
                         break;
                     case "ban":
                         $this->antiCheat->getServer()->getNameBans()->addBan($event->getPlayer()->getName());
-                        $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false);
+                        $event->getPlayer()->kick($this->antiCheat->options["ban message"], false);
                         break;
                     case "ban-client":
                         if(($banclientplugin = $this->antiCheat->getServer()->getPluginManager()->getPlugin("BanClient")) !== null){
-                            $banclientplugin->banClient($event->getPlayer(), TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false, true);
+                            $banclientplugin->banClient($event->getPlayer(), $this->antiCheat->options["ban message"], false, true);
                         }else{
                             $this->antiCheat->getServer()->getLogger()->warning("[AntiCheat] BanClient plugin not found!");
                         }
@@ -93,47 +131,6 @@ class EventListener implements Listener{
                             $this->antiCheat->getServer()->dispatchCommand(new ConsoleCommandSender(), str_replace("{player}", $event->getPlayer()->getName(), $commands));
                         }
                 }
-                return;
-            }
-        }
-
-        if($p->hasEffect(Effect::SPEED) or $p->hasPermission("anticheat.admin")) return;
-
-        if(($d = Main::XZDistanceSquared($event->getFrom(), $event->getTo())) > 1.4){
-            $this->antiCheat->speedpoints[$name]++;
-        }elseif($d > 3){
-            $this->antiCheat->speedpoints[$name] += 2;
-        }
-
-        if(isset($this->antiCheat->speedpoints[$name]) and $this->antiCheat->speedpoints[$name] === $this->antiCheat->options["points"]){
-            unset($this->antiCheat->speedpoints[$name]);
-            $this->antiCheat->kicks[$name]++;
-            $event->getPlayer()->kick($this->antiCheat->options["kick message"], false);
-            return;
-        }
-
-        if(isset($this->antiCheat->kicks[$name]) and $this->antiCheat->kicks[$name] === $this->antiCheat->options["kicks"]){
-            unset($this->antiCheat->kicks[$name]);
-            switch($this->antiCheat->options["Action"]){
-                case "ban-ip":
-                    $this->antiCheat->getServer()->getIPBans()->addBan($event->getPlayer()->getAddress());
-                    $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false);
-                    break;
-                case "ban":
-                    $this->antiCheat->getServer()->getNameBans()->addBan($event->getPlayer()->getName());
-                    $event->getPlayer()->kick(TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false);
-                    break;
-                case "ban-client":
-                    if(($banclientplugin = $this->antiCheat->getServer()->getPluginManager()->getPlugin("BanClient")) !== null){
-                        $banclientplugin->banClient($event->getPlayer(), TextFormat::RED . "[AntiCheat] " . TextFormat::YELLOW . "You were banned for using mods/hacks.", false, true);
-                    }else{
-                        $this->antiCheat->getServer()->getLogger()->warning("[AntiCheat] BanClient plugin not found!");
-                    }
-                    break;
-                case "custom":
-                    foreach($this->antiCheat->options["Commands"] as $commands){
-                        $this->antiCheat->getServer()->dispatchCommand(new ConsoleCommandSender(), str_replace("{player}", $event->getPlayer()->getName(), $commands));
-                    }
             }
             return;
         }
