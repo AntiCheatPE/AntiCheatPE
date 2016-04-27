@@ -14,6 +14,7 @@ class Main extends PluginBase{
     public $kicks = [];
     public $options;
     public $speedpoints = [];
+    public $combatLogger = null;
 
     public function onEnable(){
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
@@ -22,6 +23,9 @@ class Main extends PluginBase{
         if(!is_int($this->options["tags"]) or !is_int($this->options["kicks"]) or !is_int($this->options["points"])){
             $this->getLogger()->critical(TextFormat::RED . "Config file error: tags, kicks and points must be numerical! Disabling AntiCheatPE...");
             $this->getServer()->getPluginManager()->disablePlugin($this);
+        }
+        if($this->options["clogger"]){
+            $this->combatLogger = $this->getServer()->getPluginManager()->getPlugin("CombatLogger");
         }
         $this->getLogger()->info(TextFormat::GREEN . "AntiCheatPE successfully enabled!");
     }

@@ -19,7 +19,7 @@ class EventListener implements Listener{
         $p = $event->getPlayer();
         $name = $event->getPlayer()->getName();
 
-        if($p->isCreative() or $p->isSpectator() or $p->getAllowFlight() or $p->hasEffect(8) or $p->hasPermission("anticheat.admin")) return;
+        if($p->isCreative() or $p->isSpectator() or $p->getAllowFlight() or $p->hasEffect(8) or ($this->antiCheat->combatLogger !== null and isset($this->antiCheat->combatLogger->tasks[$p->getName()])) or $p->hasPermission("anticheat.admin")) return;
 
         $isAirUnder = Main::isAirUnder($p);
 
@@ -101,6 +101,8 @@ class EventListener implements Listener{
             $this->antiCheat->speedpoints[$name]++;
         }elseif($d > 3){
             $this->antiCheat->speedpoints[$name] += 2;
+        }elseif($d > 0){
+            $this->antiCheat->speedpoints[$name] -= 1;
         }
 
         if(isset($this->antiCheat->speedpoints[$name]) and $this->antiCheat->speedpoints[$name] === $this->antiCheat->options["points"]){

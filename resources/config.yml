@@ -20,3 +20,7 @@ ban message: "§4[AntiCheat] §eYou were banned for using mods/hacks/cheats."
 # - timerbanip add {player} 120
 Action: ban-ip
 Commands: []
+
+#Combatlogger plugin (https://github.com/Lambo16/CombatLogger/) by Lambo integration
+#Set to true if you want to disable speed and fly hack checking during pvp
+clogger: false
