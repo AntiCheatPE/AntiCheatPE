@@ -3,7 +3,7 @@ main: AntiCheatPE\Main
 version: 1.0.0
 api: [2.0.0]
 author: AntiCheatPETeam
-authors: [luca28pet, Fycarman]
+authors: [luca28pet, Fycarman, Survingo]
 description: AntiCheat plugin for your PocketMine-MP server!
 permissions:
  anticheat.admin:
