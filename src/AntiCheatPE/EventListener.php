@@ -6,6 +6,9 @@ use pocketmine\command\ConsoleCommandSender;
 use pocketmine\entity\Effect;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerMoveEvent;
+use pocketmine\Player;
+use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
 
 class EventListener implements Listener{
 
@@ -137,4 +140,35 @@ class EventListener implements Listener{
             return;
         }
     }
+    
+    public function onDamage(EntityDamageEvent $DmgEvent, EntityDamageByEntityEvent $DmgByEntity){
+
+	if($DmgByEntity->getEntity() instanceof Player){
+
+	     if($DmgByEntity->getDamage() < 0) {
+
+	     $DmgByEntity->getPlayer()->kick("§cDon't use §4Damage §cCheats in this Server!");
+
+	      }
+
+		 }elseif($DmgByEntity->getDamager() instanceof Player){
+
+	     if($DmgByEntity->getDamage() > 19) {
+
+	     $DmgByEntity->getPlayer()->kick("§cDon't use §4Damage §cCheats in this Server!");
+
+	        }
+
+         }elseif($DmgByEntity->getEntity() instanceof Player){
+
+	     if($DmgByEntity->getKnockBack() < 1.3) {
+
+	     $DmgByEntity->getPlayer()->kick("§cDon't use §4Damage §cCheats in this Server!");
+
+	    }
+
+     }
+
+  }
+  
 }
