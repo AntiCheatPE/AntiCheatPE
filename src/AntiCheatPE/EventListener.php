@@ -146,29 +146,39 @@ class EventListener implements Listener{
 	if($DmgByEntity->getEntity() instanceof Player){
 
 	     if($DmgByEntity->getDamage() < 0) {
+	     	
+	     	if(!$DmgByEntity->getPlayer()->hasPermission("anticheat.admin")){
 
 	     $DmgByEntity->getPlayer()->kick("§cDon't use §4Damage §cCheats in this Server!");
+	     
+	     	}
 
 	      }
 
 		 }elseif($DmgByEntity->getDamager() instanceof Player){
 
 	     if($DmgByEntity->getDamage() > 19) {
+	     	
+	     	if(!$DmgByEntity->getPlayer()->hasPermission("anticheat.admin")){
 
 	     $DmgByEntity->getPlayer()->kick("§cDon't use §4Damage §cCheats in this Server!");
+	     
+	     	  }
 
 	        }
 
          }elseif($DmgByEntity->getEntity() instanceof Player){
 
 	     if($DmgByEntity->getKnockBack() < 1.3) {
+	     	
+	     	if(!$DmgByEntity->getPlayer()->hasPermission("anticheat.admin")){
 
 	     $DmgByEntity->getPlayer()->kick("§cDon't use §4Damage §cCheats in this Server!");
+	     
+	     	}
 
 	    }
-
      }
-
   }
   
 }
