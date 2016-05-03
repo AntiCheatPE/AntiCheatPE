@@ -149,7 +149,7 @@ class EventListener implements Listener{
 	     	
 	     	if(!$DmgByEntity->getPlayer()->hasPermission("anticheat.admin")){
 
-	     $DmgByEntity->getPlayer()->kick("§cDon't use §4Damage §cCheats in this Server!");
+	     $DmgByEntity->getPlayer()->kick($this->antiCheat->getConfig()->get("dmgmessage"));
 	     
 	     	}
 
@@ -161,7 +161,7 @@ class EventListener implements Listener{
 	     	
 	     	if(!$DmgByEntity->getPlayer()->hasPermission("anticheat.admin")){
 
-	     $DmgByEntity->getPlayer()->kick("§cDon't use §4Damage §cCheats in this Server!");
+	     $DmgByEntity->getPlayer()->kick($this->antiCheat->getConfig()->get("dmgmessage"));
 	     
 	     	  }
 
@@ -173,7 +173,7 @@ class EventListener implements Listener{
 	     	
 	     	if(!$DmgByEntity->getPlayer()->hasPermission("anticheat.admin")){
 
-	     $DmgByEntity->getPlayer()->kick("§cDon't use §4Damage §cCheats in this Server!");
+	     $DmgByEntity->getPlayer()->kick($this->antiCheat->getConfig()->get("dmgmessage"));
 	     
 	     	}
 
