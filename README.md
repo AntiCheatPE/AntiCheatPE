@@ -4,6 +4,7 @@ For now it is able to detect and block the following hacks :
 - Fly Hack
 - Jump Hack
 - Speed Hack
+- Damage Hack (Knockback, No-Damage, Onehit)
 
 Please report bugs by opening an issue on this project, they will be fixed ASAP.
 
