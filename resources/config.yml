@@ -15,7 +15,7 @@ points: 7
 #Message used on kick (you can use § for colored messages. Note: showed only if the action is set to ban, ban-ip or ban-client).
 kick message: "§4[AntiCheat] §eYou were kicked for using mods/hacks/cheats. Please disable them to play on this server"
 #Message used on kick by Damage Hacks (Knockbak, Onehit, No-Damage)
-dmgmessage: "§cDon't use §4Damage §cCheats in this Server!"
+dmgmessage: "§4[AntiCheat] §eDon't use §6Damage §eCheats in this Server!"
 #Message used on ban (you can use § for colored messages. Note: showed only if the action is set to ban, ban-ip or ban-client).
 ban message: "§4[AntiCheat] §eYou were banned for using mods/hacks/cheats."
 #Action executed after the number of kicks defined. Options: ban, ban-ip, ban-client, custom. Default: ban-ip
