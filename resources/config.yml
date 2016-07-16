@@ -32,6 +32,9 @@ Commands: []
 #Set to true if you want to disable speed and fly hack checking during pvp
 clogger: false
 
+#Allow experimental gamemode protection
+gamemode-protection: true
+
 #Gamemode protection
 #Allowed gamemode
 gamemode: SURVIVAL
