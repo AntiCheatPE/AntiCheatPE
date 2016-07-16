@@ -31,3 +31,17 @@ Commands: []
 #Combatlogger plugin (https://github.com/Lambo16/CombatLogger/) by Lambo integration
 #Set to true if you want to disable speed and fly hack checking during pvp
 clogger: false
+
+#Gamemode protection
+#Allowed gamemode
+gamemode: SURVIVAL
+
+#This will be done if someone cheats gamemode
+#Available actions:
+#kick - Player will be kicked
+#ban - Player will be banned
+#ban-ip - IP will be banned
+gamemode-action: kick
+
+#Message used on kick/ban/ip-ban
+gamemode-message: "§4[AntiCheat] §eYou were kicked for using gamemode mods/hacks/cheats."
