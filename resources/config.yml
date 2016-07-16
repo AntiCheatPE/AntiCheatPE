@@ -35,6 +35,9 @@ clogger: false
 #Allow experimental gamemode protection
 gamemode-protection: true
 
+#Time to check for gamemode cheaters in seconds
+gamemode-time: 5
+
 #Gamemode protection
 #Allowed gamemode
 gamemode: SURVIVAL
