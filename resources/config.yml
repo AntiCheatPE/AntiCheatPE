@@ -31,3 +31,10 @@ Commands: []
 #Combatlogger plugin (https://github.com/Lambo16/CombatLogger/) by Lambo integration
 #Set to true if you want to disable speed and fly hack checking during pvp
 clogger: false
+
+#Allow gamemode protection and server settings
+gamemode-protection: true
+
+#Time to send server settings to all players
+#will be repeated
+gamemode-time: 5
