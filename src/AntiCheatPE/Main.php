@@ -6,7 +6,7 @@ use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
-use AntiCheatPE\tasks\GameModeTask;
+use AntiCheatPE\tasks\SettingsTask;
 
 class Main extends PluginBase{
 
@@ -29,7 +29,7 @@ class Main extends PluginBase{
             $this->combatLogger = $this->getServer()->getPluginManager()->getPlugin("CombatLogger");
         }
         if($this->options["gamemode-protection"]){
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new GameModeTask($this), ($this->options["gamemode-time"] * 20));
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new SettingsTask($this), ($this->options["gamemode-time"] * 20));
             $this->getLogger()->info(TextFormat::GREEN . "Gamemode protection enabled!");
         }
         $this->getLogger()->info(TextFormat::GREEN . "AntiCheatPE successfully enabled!");
