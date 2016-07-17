@@ -32,22 +32,9 @@ Commands: []
 #Set to true if you want to disable speed and fly hack checking during pvp
 clogger: false
 
-#Allow experimental gamemode protection
+#Allow gamemode protection and server settings
 gamemode-protection: true
 
-#Time to check for gamemode cheaters in seconds
+#Time to send server settings to all players
+#will be repeated
 gamemode-time: 5
-
-#Gamemode protection
-#Allowed gamemode
-gamemode: SURVIVAL
-
-#This will be done if someone cheats gamemode
-#Available actions:
-#kick - Player will be kicked
-#ban - Player will be banned
-#ban-ip - IP will be banned
-gamemode-action: kick
-
-#Message used on kick/ban/ip-ban
-gamemode-message: "§4[AntiCheat] §eYou were kicked for using gamemode mods/hacks/cheats."
