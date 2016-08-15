@@ -4,11 +4,11 @@ namespace AntiCheatPE;
 
 use pocketmine\command\ConsoleCommandSender;
 use pocketmine\entity\Effect;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\Player;
-use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
 
 class EventListener implements Listener{
 
@@ -20,10 +20,10 @@ class EventListener implements Listener{
 
     public function onMove(PlayerMoveEvent $event){
         $p = $event->getPlayer();
-        $name = $event->getPlayer()->getName();
 
-        if($p->isCreative() or $p->isSpectator() or $p->getAllowFlight() or $p->hasEffect(8) or ($this->antiCheat->combatLogger !== null and isset($this->antiCheat->combatLogger->tasks[$p->getName()])) or $p->hasPermission("anticheat.admin")) return;
+        if($p->isCreative() or $p->isSpectator() or $p->getAllowFlight() or $p->hasEffect(Effect::JUMP) or ($this->antiCheat->combatLogger !== null and isset($this->antiCheat->combatLogger->tasks[$p->getName()])) or $p->hasPermission("anticheat.admin")) return;
 
+        $name = $p->getName();
         $isAirUnder = Main::isAirUnder($p);
 
         if(!$isAirUnder and isset($this->antiCheat->isElevating[$name])){
@@ -51,8 +51,7 @@ class EventListener implements Listener{
                     $this->antiCheat->isElevating[$name] > 1.5
                 ){
                     $this->antiCheat->players[$name]++;
-                }else{
-                    $this->antiCheat->players[$name] = 0;
+                    $p->sendSettings();
                 }
             }
 
@@ -61,8 +60,7 @@ class EventListener implements Listener{
                 $isAirUnder
             ){
                 $this->antiCheat->players[$name]++;
-            }else{
-                $this->antiCheat->players[$name] = 0;
+                $p->sendSettings();
             }
 
             if(isset($this->antiCheat->players[$name]) and $this->antiCheat->players[$name] === $this->antiCheat->options["tags"]){
@@ -140,45 +138,13 @@ class EventListener implements Listener{
             return;
         }
     }
-    
-    public function onDamage(EntityDamageEvent $DmgEvent, EntityDamageByEntityEvent $DmgByEntity){
 
-	if($DmgByEntity->getEntity() instanceof Player){
-
-	     if($DmgByEntity->getDamage() < 0) {
-	     	
-	     	if(!$DmgByEntity->getPlayer()->hasPermission("anticheat.admin")){
-
-	     $DmgByEntity->getPlayer()->kick($this->antiCheat->getConfig()->get("dmgmessage"));
-	     
-	     	}
-
-	      }
-
-		 }elseif($DmgByEntity->getDamager() instanceof Player){
-
-	     if($DmgByEntity->getDamage() > 19) {
-	     	
-	     	if(!$DmgByEntity->getPlayer()->hasPermission("anticheat.admin")){
-
-	     $DmgByEntity->getPlayer()->kick($this->antiCheat->getConfig()->get("dmgmessage"));
-	     
-	     	  }
-
-	        }
-
-         }elseif($DmgByEntity->getEntity() instanceof Player){
-
-	     if($DmgByEntity->getKnockBack() < 1.3) {
-	     	
-	     	if(!$DmgByEntity->getPlayer()->hasPermission("anticheat.admin")){
-
-	     $DmgByEntity->getPlayer()->kick($this->antiCheat->getConfig()->get("dmgmessage"));
-	     
-	     	}
-
-	    }
-     }
-  }
+    public function onDamage(EntityDamageEvent $event){
+        if($event instanceof EntityDamageByEntityEvent and $event->getEntity() instanceof Player and $event->getDamager() instanceof Player){
+            if($event->getEntity()->distanceSquared($event->getDamager()) > $this->antiCheat->options["max-hit-distance"]){
+                $event->setCancelled();
+            }
+        }
+    }
   
 }

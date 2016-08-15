@@ -6,7 +6,6 @@ use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
-use AntiCheatPE\tasks\SettingsTask;
 
 class Main extends PluginBase{
 
@@ -28,10 +27,12 @@ class Main extends PluginBase{
         if($this->options["clogger"]){
             $this->combatLogger = $this->getServer()->getPluginManager()->getPlugin("CombatLogger");
         }
-        if($this->options["gamemode-protection"]){
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new SettingsTask($this), ($this->options["gamemode-time"] * 20));
-            $this->getLogger()->info(TextFormat::GREEN . "Gamemode protection enabled!");
+        if(!isset($this->options["max-hit-distance"])){
+            $this->options["max-hit-distance"] = 16;
+        }else{
+            $this->options["max-hit-distance"] *= $this->options["max-hit-distance"];
         }
+
         $this->getLogger()->info(TextFormat::GREEN . "AntiCheatPE successfully enabled!");
     }
 
@@ -63,7 +64,7 @@ class Main extends PluginBase{
         return !array_filter($under);
     }
     
-    public static function XZDistanceSquared(Vector3 $v1, Vector3 $v2){
+    public static function XZDistanceSquared(Vector3 $v1, Vector3 $v2) : float{
         return ($v1->x - $v2->x) ** 2 + ($v1->z - $v2->z) ** 2;
     }
 

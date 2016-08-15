@@ -6,8 +6,8 @@
 
 #Authors: luca28pet, Fycarman, Survingo, AryToNeX
 
-#For fly: How many times a player must be tagged as hacker before being kicked. Default: 3
-tags: 3
+#For fly: How many times a player must be tagged as hacker before being kicked. Default: 5
+tags: 5
 #Fly & Speed: How many times a player must be kicked before an action is executed. Default: 3
 kicks: 3
 #For speed: How many speed points a player must get before an action is executed. Default: 7
@@ -32,9 +32,5 @@ Commands: []
 #Set to true if you want to disable speed and fly hack checking during pvp
 clogger: false
 
-#Allow gamemode protection and server settings
-gamemode-protection: true
-
-#Time to send server settings to all players
-#will be repeated
-gamemode-time: 5
+#Max hit distance in blocks. A pvp hit from a player more distant will be blocked
+max-hit-distance: 4
