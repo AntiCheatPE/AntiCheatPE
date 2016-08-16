@@ -7,17 +7,25 @@
 #Authors: luca28pet, Fycarman, Survingo, AryToNeX
 
 #For fly: How many times a player must be tagged as hacker before being kicked. Default: 5
+#Put -1 to disable and just send the anti fly packet. (use if you are experiencing false positives)
 tags: 5
+
 #Fly & Speed: How many times a player must be kicked before an action is executed. Default: 3
 kicks: 3
-#For speed: How many speed points a player must get before an action is executed. Default: 7
+
+#For speed: How many speed points a player must get before it gets kicked. Default: 7
+#Put -1 to disable speed hack detection
 points: 7
+
 #Message used on kick (you can use § for colored messages. Note: showed only if the action is set to ban, ban-ip or ban-client).
 kick message: "§4[AntiCheat] §eYou were kicked for using mods/hacks/cheats. Please disable them to play on this server"
+
 #Message used on kick by Damage Hacks (Knockbak, Onehit, No-Damage)
 dmgmessage: "§4[AntiCheat] §eDon't use §6Damage §eCheats in this Server!"
+
 #Message used on ban (you can use § for colored messages. Note: showed only if the action is set to ban, ban-ip or ban-client).
 ban message: "§4[AntiCheat] §eYou were banned for using mods/hacks/cheats."
+
 #Action executed after the number of kicks defined. Options: ban, ban-ip, ban-client, custom. Default: ban-ip
 #You can use {player} for the player's name.
 #If you have Timerban or EssentialsPE,and you want to temp-ban a player,just the action as the following:

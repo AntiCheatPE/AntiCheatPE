@@ -50,7 +50,7 @@ class EventListener implements Listener{
                     $isAirUnder and
                     $this->antiCheat->isElevating[$name] > 1.5
                 ){
-                    $this->antiCheat->players[$name]++;
+                    $this->antiCheat->options["tags"] !== -1 and $this->antiCheat->players[$name]++;
                     $p->sendSettings();
                 }
             }
@@ -59,7 +59,7 @@ class EventListener implements Listener{
                 round($fromY, 5) === round($toY, 5) and
                 $isAirUnder
             ){
-                $this->antiCheat->players[$name]++;
+                $this->antiCheat->options["tags"] !== -1 and $this->antiCheat->players[$name]++;
                 $p->sendSettings();
             }
 
@@ -96,7 +96,7 @@ class EventListener implements Listener{
             }
         }
 
-        if($p->hasEffect(Effect::SPEED) or $p->hasPermission("anticheat.admin")) return;
+        if($this->antiCheat->options["points"] === -1 or $p->hasEffect(Effect::SPEED) or $p->hasPermission("anticheat.admin")) return;
 
         if(($d = Main::XZDistanceSquared($event->getFrom(), $event->getTo())) > 1.4){
             $this->antiCheat->speedpoints[$name]++;
