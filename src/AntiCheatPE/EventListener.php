@@ -101,7 +101,7 @@ class EventListener implements Listener{
         if(($d = Main::XZDistanceSquared($event->getFrom(), $event->getTo())) > 1.4){
             ++$this->speedpoints[$name];
         }elseif($d > 3){
-            $this->speedpoints[$name] += 2;
+            isset($this->speedpoints[$name]) ? $this->speedpoints[$name] = 2 : $this->speedpoints[$name] += 2;
         }elseif($d > 0){
             $this->speedpoints[$name] -= 1;
         }
