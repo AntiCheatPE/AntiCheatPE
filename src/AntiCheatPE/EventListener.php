@@ -13,6 +13,10 @@ use pocketmine\Player;
 class EventListener implements Listener{
 
     private $antiCheat;
+    private $isElevating = [];
+    private $flyTags = [];
+    private $kicks = [];
+    private $speedpoints = [];
 
     public function __construct(Main $antiCheat){
         $this->antiCheat = $antiCheat;
@@ -26,31 +30,31 @@ class EventListener implements Listener{
         $name = $p->getName();
         $isAirUnder = Main::isAirUnder($p);
 
-        if(!$isAirUnder and isset($this->antiCheat->isElevating[$name])){
-            unset($this->antiCheat->isElevating[$name]);
+        if(!$isAirUnder and isset($this->isElevating[$name])){
+            unset($this->isElevating[$name]);
         }else{
             $fromY = $event->getFrom()->y;
             $toY = $event->getTo()->y;
 
-            if($toY < $fromY and isset($this->antiCheat->isElevating[$name])){
-                $this->antiCheat->isElevating[$name] -= $fromY - $toY;
-                if($this->antiCheat->isElevating[$name] <= 0){
-                    unset($this->antiCheat->isElevating[$name]);
+            if($toY < $fromY and isset($this->isElevating[$name])){
+                $this->isElevating[$name] -= $fromY - $toY;
+                if($this->isElevating[$name] <= 0){
+                    unset($this->isElevating[$name]);
                 }
             }
 
             elseif($toY > $fromY){
-                isset($this->antiCheat->isElevating[$name]) ?
-                    $this->antiCheat->isElevating[$name] += $toY - $fromY
+                isset($this->isElevating[$name]) ?
+                    $this->isElevating[$name] += $toY - $fromY
                     :
-                    $this->antiCheat->isElevating[$name] = $toY - $fromY
+                    $this->isElevating[$name] = $toY - $fromY
                 ;
 
                 if(
                     $isAirUnder and
-                    $this->antiCheat->isElevating[$name] > 1.5
+                    $this->isElevating[$name] > 1.5
                 ){
-                    $this->antiCheat->options["tags"] !== -1 and $this->antiCheat->players[$name]++;
+                    $this->antiCheat->options["tags"] !== -1 and ++$this->flyTags[$name];
                     $p->sendSettings();
                 }
             }
@@ -59,17 +63,17 @@ class EventListener implements Listener{
                 round($fromY, 5) === round($toY, 5) and
                 $isAirUnder
             ){
-                $this->antiCheat->options["tags"] !== -1 and $this->antiCheat->players[$name]++;
+                $this->antiCheat->options["tags"] !== -1 and ++$this->flyTags[$name];
                 $p->sendSettings();
             }
 
-            if(isset($this->antiCheat->players[$name]) and $this->antiCheat->players[$name] === $this->antiCheat->options["tags"]){
-                if((isset($this->antiCheat->kicks[$name]) and $this->antiCheat->kicks[$name] < $this->antiCheat->options["kicks"] - 1) or !isset($this->antiCheat->kicks[$name])){
-                    unset($this->antiCheat->players[$name]);
-                    ++$this->antiCheat->kicks[$name];
+            if(isset($this->flyTags[$name]) and $this->flyTags[$name] === $this->antiCheat->options["tags"]){
+                if((isset($this->kicks[$name]) and $this->kicks[$name] < $this->antiCheat->options["kicks"] - 1) or !isset($this->kicks[$name])){
+                    unset($this->flyTags[$name]);
+                    ++$this->kicks[$name];
                     $event->getPlayer()->kick($this->antiCheat->options["kick message"], false);
                 }else{
-                    unset($this->antiCheat->kicks[$name]);
+                    unset($this->kicks[$name]);
                     switch($this->antiCheat->options["Action"]){
                         case "ban-ip":
                             $this->antiCheat->getServer()->getIPBans()->addBan($event->getPlayer()->getAddress());
@@ -99,20 +103,20 @@ class EventListener implements Listener{
         if($this->antiCheat->options["points"] === -1 or $p->hasEffect(Effect::SPEED) or $p->hasPermission("anticheat.admin")) return;
 
         if(($d = Main::XZDistanceSquared($event->getFrom(), $event->getTo())) > 1.4){
-            $this->antiCheat->speedpoints[$name]++;
+            ++$this->speedpoints[$name];
         }elseif($d > 3){
-            $this->antiCheat->speedpoints[$name] += 2;
+            $this->speedpoints[$name] += 2;
         }elseif($d > 0){
-            $this->antiCheat->speedpoints[$name] -= 1;
+            $this->speedpoints[$name] -= 1;
         }
 
-        if(isset($this->antiCheat->speedpoints[$name]) and $this->antiCheat->speedpoints[$name] === $this->antiCheat->options["points"]){
-            if((isset($this->antiCheat->kicks[$name]) and $this->antiCheat->kicks[$name] < $this->antiCheat->options["kicks"] - 1) or !isset($this->antiCheat->kicks[$name])){
-                unset($this->antiCheat->speedpoints[$name]);
-                $this->antiCheat->kicks[$name]++;
+        if(isset($this->speedpoints[$name]) and $this->speedpoints[$name] === $this->antiCheat->options["points"]){
+            if((isset($this->kicks[$name]) and $this->kicks[$name] < $this->antiCheat->options["kicks"] - 1) or !isset($this->kicks[$name])){
+                unset($this->speedpoints[$name]);
+                ++$this->kicks[$name];
                 $event->getPlayer()->kick($this->antiCheat->options["kick message"], false);
             }else{
-                unset($this->antiCheat->kicks[$name]);
+                unset($this->kicks[$name]);
                 switch($this->antiCheat->options["Action"]){
                     case "ban-ip":
                         $this->antiCheat->getServer()->getIPBans()->addBan($event->getPlayer()->getAddress());

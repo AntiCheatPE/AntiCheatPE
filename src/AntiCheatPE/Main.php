@@ -9,11 +9,7 @@ use pocketmine\utils\TextFormat;
 
 class Main extends PluginBase{
 
-    public $isElevating = [];
-    public $players = [];
-    public $kicks = [];
     public $options;
-    public $speedpoints = [];
     public $combatLogger = null;
 
     public function onEnable(){
