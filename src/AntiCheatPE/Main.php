@@ -19,6 +19,7 @@ class Main extends PluginBase{
         if(!is_int($this->options["tags"]) or !is_int($this->options["kicks"]) or !is_int($this->options["points"])){
             $this->getLogger()->critical(TextFormat::RED . "Config file error: tags, kicks and points must be numerical! Disabling AntiCheatPE...");
             $this->getServer()->getPluginManager()->disablePlugin($this);
+            return;
         }
         if($this->options["clogger"]){
             $this->combatLogger = $this->getServer()->getPluginManager()->getPlugin("CombatLogger");
