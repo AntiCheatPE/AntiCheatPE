@@ -30,8 +30,10 @@ class EventListener implements Listener{
         $name = $p->getName();
         $isAirUnder = Main::isAirUnder($p);
 
-        if(!$isAirUnder and isset($this->isElevating[$name])){
-            unset($this->isElevating[$name]);
+        if(!$isAirUnder){
+            if(isset($this->isElevating[$name])){
+                unset($this->isElevating[$name]);
+            }
         }else{
             $fromY = $event->getFrom()->y;
             $toY = $event->getTo()->y;
@@ -50,19 +52,13 @@ class EventListener implements Listener{
                     $this->isElevating[$name] = $toY - $fromY
                 ;
 
-                if(
-                    $isAirUnder and
-                    $this->isElevating[$name] > 1.5
-                ){
+                if($this->isElevating[$name] > 1.5){
                     $this->antiCheat->options["tags"] !== -1 and ++$this->flyTags[$name];
                     $p->sendSettings();
                 }
             }
 
-            elseif(
-                round($fromY, 5) === round($toY, 5) and
-                $isAirUnder
-            ){
+            elseif(round($fromY, 5) === round($toY, 5)){
                 $this->antiCheat->options["tags"] !== -1 and ++$this->flyTags[$name];
                 $p->sendSettings();
             }
