@@ -1,4 +1,4 @@
-# AntiCheatPE #BETA, REPORT BUGS!
+# AntiCheatPE #INACTIVE
 Note: most of hacks are already blocked by pocketmine, this plugin will only blocks hacks that aren't already blocked.
 For now it is able to detect and block the following hacks :
 - Fly Hack
